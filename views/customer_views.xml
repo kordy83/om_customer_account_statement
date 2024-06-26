@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="customer_account_statement_form" model="ir.ui.view">
+        <field name="name">view.customer.account.statement.form</field>
+     	<field name="model">res.partner</field>
+	    <field name="inherit_id" ref="base.view_partner_form"/>
+     	<field name="arch" type="xml">
+	        <xpath expr="//page[@name='sales_purchases']" position="after">
+	            <page string='Customer Statement' name="customer_statement" groups="account.group_account_invoice">
+	                <group>
+	                    <group>
+	                        <field name="by_date"/>
+	                        <field name="to_date" invisible="by_date == False"/>
+	                    </group>
+	                    <group>
+	                        <button name="generate_customer_account_lines" string='Generate Account Lines' 
+	                                type="object" class="oe_highlight"/>
+	                        <button name="send_customer_statement" string='Send Account Statement' 
+	                                type="object" class="oe_highlight"/><br/><br/>
+	                        <button name="print_customer_statement" string='Print Account Statement' 
+	                                type="object" class="oe_highlight"/>
+	                    </group>
+	                </group>
+	                <field name="customer_account_lines" readonly="1">
+	                    <tree decoration-danger="is_due" decoration-bf="is_due">
+	                        <field name="invoice_id"/>
+	                        <field name="invoice_date"/>
+	                        <field name="due_date"/>
+	                        <field name="amount" widget="monetary"/>
+	                        <field name="paid_amount" widget="monetary"/>
+	                        <field name="balance" widget="monetary"/>
+	                        <field name="currency_id" column_invisible="1"/>
+	                        <field name="is_due" column_invisible="1"/>
+	                    </tree>
+	                    <form>
+	                        <group>
+	                            <group>
+	                                <field name="invoice_id"/>
+	                                <field name="invoice_date"/>
+	                                <field name="due_date"/>
+	                            </group>
+	                            <group>
+	                                <field name="amount"/>
+	                                <field name="paid_amount"/>
+	                                <field name="balance"/>
+	                            </group>
+	                        </group>
+	                    </form>
+	                </field>
+	                <group name="note_group" col="6">
+                        <group colspan="4">
+                        </group>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="invoice_due">
+                            <field name="customer_due_amount"/>
+                            <field name="customer_overdue_amount" class="text-danger"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    <table style="width:100%;border:1px solid black;text-align:center">
+                        <thead style="background:#7C7BAD;color:white">
+                            <th style="width:12.5%;border:1px solid black;text-align:center">Not Due</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">0-30</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">31-60</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">61-90</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">91-120</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">121-150</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">151-180</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">Greater 180</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border:1px solid black;text-align:center"><field name="not_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="first_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="second_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="third_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="fourth_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="five_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="six_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="seven_due" readonly="1"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+	            </page>
+
+
+	            <page string='Vendor Statement' name="vendor_statement" groups="account.group_account_invoice">
+	                <group>
+	                    <group>
+	                        <field name="by_date"/>
+	                        <field name="to_date" invisible="by_date == False"/>
+	                    </group>
+	                    <group>
+	                        <button name="generate_vendor_account_lines" string='Generate Account Lines'
+	                                type="object" class="oe_highlight"/>
+	                        <button name="send_vendor_statement" string='Send Account Statement'
+	                                type="object" class="oe_highlight"/><br/><br/>
+	                        <button name="print_vendor_statement" string='Print Account Statement'
+	                                type="object" class="oe_highlight"/>
+	                    </group>
+	                </group>
+	                <field name="vendor_account_lines" readonly="1">
+	                    <tree decoration-danger="is_due" decoration-bf="is_due">
+	                        <field name="invoice_id"/>
+	                        <field name="invoice_date"/>
+	                        <field name="due_date"/>
+	                        <field name="amount" widget="monetary"/>
+	                        <field name="paid_amount" widget="monetary"/>
+	                        <field name="balance" widget="monetary"/>
+	                        <field name="currency_id" column_invisible="1"/>
+	                        <field name="is_due" column_invisible="1"/>
+	                    </tree>
+	                    <form>
+	                        <group>
+	                            <group>
+	                                <field name="invoice_id"/>
+	                                <field name="invoice_date"/>
+	                                <field name="due_date"/>
+	                            </group>
+	                            <group>
+	                                <field name="amount"/>
+	                                <field name="paid_amount"/>
+	                                <field name="balance"/>
+	                            </group>
+	                        </group>
+	                    </form>
+	                </field>
+	                <group name="note_group" col="6">
+                        <group colspan="4">
+                        </group>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="invoice_due">
+                            <field name="vendor_due_amount"/>
+                            <field name="vendor_overdue_amount" class="text-danger"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    <table style="width:100%;border:1px solid black;text-align:center">
+                        <thead style="background:#7C7BAD;color:white">
+                            <th style="width:12.5%;border:1px solid black;text-align:center">Not Due</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">0-30</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">31-60</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">61-90</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">91-120</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">121-150</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">151-180</th>
+                            <th style="width:12.5%;border:1px solid black;text-align:center">Greater 180</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border:1px solid black;text-align:center"><field name="v_not_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_first_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_second_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_third_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_fourth_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_five_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_six_due" readonly="1"/></td>
+                                <td style="border:1px solid black;text-align:center"><field name="v_seven_due" readonly="1"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+	            </page>
+            </xpath>
+     	</field>
+	 </record>
+
+</odoo>

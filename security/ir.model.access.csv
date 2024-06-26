@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_statement_line_user,customer statement lines,model_customer_account_line,base.group_user,1,0,0,0
+access_customer_statement_line_account_user,Customer Statement Lines Account,model_customer_account_line,account.group_account_invoice,1,1,1,1
+access_vendor_statement_line_account_user,Vendor Statement Lines Account,model_vendor_account_line,account.group_account_invoice,1,1,1,1

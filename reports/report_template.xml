@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_customer_statement_template">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <div class="page">
+                    <div id="informations" class="row mt32 mb32">
+                        <div class="col-6">
+                            <address style="text-align:left" t-esc="o" t-options='{"widget": "contact", "fields": ["address", "name","phone"], "no_marker": True}' />
+                            <div t-if="o.vat" class="mt16">
+                                <t t-if="o.country_id.vat_label" t-esc="o.country_id.vat_label" id="inv_tax_id_label"/>
+                                <t t-else="">Tax ID</t>: <span t-field="o.vat"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <b>Statement Date :</b> <span t-field="o.to_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <table class="table table-sm o_main_table" name="statement_line_table">
+                        <thead>
+                            <tr>
+                                <th name="invoice_number" class="text-left"><span>Invoice #</span></th>
+                                <th name="invoice_date" class="text-center"><span>Invoice Date</span></th>
+                                <th name="invoice_date_due" class="text-center"><span>Due Date</span></th>
+                                <th name="invoice_amount" class="text-end"><span>INV Amount</span></th>
+                                <th name="paid_amount" class="text-end"><span>Paid Amount</span></th>
+                                <th name="balance" class="text-end"><span>Balance</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-foreach="o.customer_account_lines" t-as="line">
+                                <tr t-att-class="'font-weight-bold text-danger' if line.is_due else 'o_line_note'">
+                                    <td name="invoice_number"  class="text-left"><span t-field="line.invoice_id.name"/></td>
+                                    <td name="invoice_date"  class="text-center">
+                                        <span t-field="line.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                    <td name="invoice_date_due"  class="text-center">
+                                        <span t-field="line.due_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                    <td name="invoice_amount"  class="text-end"><span t-field="line.amount"/></td>
+                                    <td name="invoice_paid_amount"  class="text-end"><span t-field="line.paid_amount"/></td>
+                                    <td name="invoice_balance"  class="text-end"><span t-field="line.balance"/></td>
+                                </tr>
+                            </t>
+                        
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table class="table table-sm o_main_table" name="statement_line_table">
+                        <thead>
+                            <tr style="background:#7C7BAD;color:white">
+                                <th style="width:12.5%" name="not_due" class="text-center"><span>Not Due</span></th>
+                                <th style="width:12.5%" name="first_due" class="text-center"><span>0-30</span></th>
+                                <th style="width:12.5%" name="second_due" class="text-center"><span>31-60</span></th>
+                                <th style="width:12.5%" name="third_due" class="text-center"><span>61-90</span></th>
+                                <th style="width:12.5%" name="fourth_due" class="text-center"><span>91-120</span></th>
+                                <th style="width:12.5%" name="five_due" class="text-center"><span>121-150</span></th>
+                                <th style="width:12.5%" name="six_due" class="text-center"><span>151-180</span></th>
+                                <th style="width:12.5%" name="seven_due" class="text-center"><span> &lt; 180</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="aging_body">
+                            <tr>
+                                <td name="not_due"  class="text-center"><span t-field="o.not_due"/></td>
+                                <td name="first_due"  class="text-center"><span t-field="o.first_due"/></td>
+                                <td name="second_due"  class="text-center"><span t-field="o.second_due"/></td>
+                                <td name="third_due"  class="text-center"><span t-field="o.third_due"/></td>
+                                <td name="fourth_due"  class="text-center"><span t-field="o.fourth_due"/></td>
+                                <td name="five_due"  class="text-center"><span t-field="o.five_due"/></td>
+                                <td name="six_due"  class="text-center"><span t-field="o.six_due"/></td>
+                                <td name="seven_due"  class="text-center"><span t-field="o.seven_due"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+        
+        <template id="cust_acc_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.lang"/>
+                    <t t-call="om_customer_account_statement.report_customer_statement_template" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="report_vendor_statement_template">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <div class="page">
+                    <div id="informations" class="row mt32 mb32">
+                        <div class="col-6">
+                            <address style="text-align:left" t-esc="o" t-options='{"widget": "contact", "fields": ["address", "name","phone"], "no_marker": True}' />
+                            <div t-if="o.vat" class="mt16">
+                                <t t-if="o.country_id.vat_label" t-esc="o.country_id.vat_label" id="inv_tax_id_label"/>
+                                <t t-else="">Tax ID</t>: <span t-field="o.vat"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <b>Statement Date :</b> <span t-field="o.to_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <table class="table table-sm o_main_table" name="statement_line_table">
+                        <thead>
+                            <tr>
+                                <th name="invoice_number" class="text-left"><span>Invoice #</span></th>
+                                <th name="invoice_date" class="text-center"><span>Invoice Date</span></th>
+                                <th name="invoice_date_due" class="text-center"><span>Due Date</span></th>
+                                <th name="invoice_amount" class="text-end"><span>INV Amount</span></th>
+                                <th name="paid_amount" class="text-end"><span>Paid Amount</span></th>
+                                <th name="balance" class="text-end"><span>Balance</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-foreach="o.vendor_account_lines" t-as="line">
+                                <tr t-att-class="'font-weight-bold text-danger' if line.is_due else 'o_line_note'">
+                                    <td name="invoice_number"  class="text-left"><span t-field="line.invoice_id.name"/></td>
+                                    <td name="invoice_date"  class="text-center">
+                                        <span t-field="line.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                    <td name="invoice_date_due"  class="text-center">
+                                        <span t-field="line.due_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                    <td name="invoice_amount"  class="text-end"><span t-field="line.amount"/></td>
+                                    <td name="invoice_paid_amount"  class="text-end"><span t-field="line.paid_amount"/></td>
+                                    <td name="invoice_balance"  class="text-end"><span t-field="line.balance"/></td>
+                                </tr>
+                            </t>
+
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table class="table table-sm o_main_table" name="statement_line_table">
+                        <thead>
+                            <tr style="background:#7C7BAD;color:white">
+                                <th style="width:12.5%" name="not_due" class="text-center"><span>Not Due</span></th>
+                                <th style="width:12.5%" name="first_due" class="text-center"><span>0-30</span></th>
+                                <th style="width:12.5%" name="second_due" class="text-center"><span>31-60</span></th>
+                                <th style="width:12.5%" name="third_due" class="text-center"><span>61-90</span></th>
+                                <th style="width:12.5%" name="fourth_due" class="text-center"><span>91-120</span></th>
+                                <th style="width:12.5%" name="five_due" class="text-center"><span>121-150</span></th>
+                                <th style="width:12.5%" name="six_due" class="text-center"><span>151-180</span></th>
+                                <th style="width:12.5%" name="seven_due" class="text-center"><span> &lt; 180</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="aging_body">
+                            <tr>
+                                <td name="not_due"  class="text-center"><span t-field="o.v_not_due"/></td>
+                                <td name="first_due"  class="text-center"><span t-field="o.v_first_due"/></td>
+                                <td name="second_due"  class="text-center"><span t-field="o.v_second_due"/></td>
+                                <td name="third_due"  class="text-center"><span t-field="o.v_third_due"/></td>
+                                <td name="fourth_due"  class="text-center"><span t-field="o.v_fourth_due"/></td>
+                                <td name="five_due"  class="text-center"><span t-field="o.v_five_due"/></td>
+                                <td name="six_due"  class="text-center"><span t-field="o.v_six_due"/></td>
+                                <td name="seven_due"  class="text-center"><span t-field="o.v_seven_due"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="vendor_acc_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.lang"/>
+                    <t t-call="om_customer_account_statement.report_vendor_statement_template" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
